@@ -120,7 +120,7 @@ func performDownload(oid string, size int64, a *action, writer, errWriter *bufio
 }
 
 func performUpload(oid string, size int64, a *action, fromPath string, writer, errWriter *bufio.Writer) {
-	if err := rsync(fromPath, remoteFile(oid)); err != nil {
+	if err := rsync("--chmod=g+r", fromPath, remoteFile(oid)); err != nil {
 		sendTransferError(oid, 5, err.Error(), writer, errWriter)
 		return
 	}
