@@ -108,7 +108,7 @@ func performDownload(oid string, size int64, a *action, writer, errWriter *bufio
 	dlfilename := dlFile.Name()
 
 	if err = rsync(remoteFile(oid), dlfilename); err != nil {
-		writeToStderr(fmt.Sprintf("Unable to download oid %s: %v\n", oid, err), errWriter)
+		sendTransferError(oid, 4, err.Error(), writer, errWriter)
 		return
 	}
 
@@ -121,7 +121,7 @@ func performDownload(oid string, size int64, a *action, writer, errWriter *bufio
 
 func performUpload(oid string, size int64, a *action, fromPath string, writer, errWriter *bufio.Writer) {
 	if err := rsync(fromPath, remoteFile(oid)); err != nil {
-		writeToStderr(fmt.Sprintf("Unable to upload oid %s: %v\n", oid, err), errWriter)
+		sendTransferError(oid, 5, err.Error(), writer, errWriter)
 		return
 	}
 
